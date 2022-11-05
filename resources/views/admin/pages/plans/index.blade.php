@@ -9,7 +9,11 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            Planos
+            <form action="{{ route('plans.search') }}" method="post" class="form form-inline">
+                @csrf
+                <input type="text" name="filter" placeholder="Nome" class="form-control" value="{{ $filters['filter'] ?? '' }}">
+                <button type="submit" class="btn btn-dark">Filtrar</button>
+            </form>
         </div>
 
         <div class="card-body">
@@ -28,10 +32,10 @@
                                 {{ $plan->name }}
                             </td>
                             <td>
-                                {{ $plan->price }}
+                                R$ {{ number_format($plan->price, 2, ',', '.') }}
                             </td>
                             <td style="width:10px;">
-                                <a href="" class="btn btn-warning">VER</a>
+                                <a href="{{ route('plans.show', $plan->url) }}" class="btn btn-warning">VER</a>
                             </td>
                         </tr>
                     @endforeach
@@ -39,7 +43,11 @@
             </table>
         </div>
         <div class="card-footer">
-            {!! $plans->links() !!}
+            @if (isset($filters))
+                {!! $plans->appends($filters)->links() !!}
+            @else
+                {!! $plans->links() !!}
+            @endif
         </div>
     </div>
 @stop

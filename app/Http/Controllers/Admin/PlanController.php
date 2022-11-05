@@ -7,6 +7,8 @@ use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+use function PHPUnit\Framework\returnSelf;
+
 class PlanController extends Controller
 {
 
@@ -19,7 +21,7 @@ class PlanController extends Controller
 
     public function index()
     {
-        $plans = $this->repository->latest()->paginate(10);
+        $plans = $this->repository->latest()->paginate();
         
         return view('admin.pages.plans.index', [
             'plans' => $plans,
@@ -33,13 +35,47 @@ class PlanController extends Controller
 
     public function store(Request $request)
     {
-        
-
+    
         $data = $request->all();
-        $data['url'] = Str::kebab($data['name']);
+        $data['url'] = Str::slug($data['name']);
 
         $this->repository->create($data);
 
         return redirect()->route('plans.index');
+    }
+
+    public function show($url)
+    {
+        $plan = $this->repository->where('url', $url)->first();
+
+        if (!$plan)
+            return redirect()->back();
+
+        return view('admin.pages.plans.show', [
+            'plan' => $plan,
+        ]);
+    }
+
+    public function destroy($url)
+    {
+        $plan = $this->repository->where('url', $url)->first();
+
+        if (!$plan)
+            return redirect()->back();
+
+        $plan->delete();
+
+        return redirect()->route('plans.index');
+    }
+
+    public function search(Request $request)
+    {
+        $filters = $request->except('_token');
+        $plans = $this->repository->search($request->filter);
+
+        return view('admin.pages.plans.index', [
+            'plans' => $plans,
+            'filters' => $filters,
+        ]);
     }
 }
