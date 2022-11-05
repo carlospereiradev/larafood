@@ -56,7 +56,8 @@ return [
     | When using the native session driver, we need a location where session
     | files may be stored. A default has been set for you but a different
     | location may be specified. This is only needed for file sessions.
-    |
+    |Merci de vérifier l'exactitude de vos informations de paiement avant la fin de chaque mois.
+
     */
 
     'files' => storage_path('framework/sessions'),
