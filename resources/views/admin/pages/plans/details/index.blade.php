@@ -32,7 +32,7 @@
                             </td>
                             <td style="width:140px;">
                                 <a href="{{ route('plans.show', $plan->url) }}" class="btn btn-warning">VER</a>
-                                <a href="{{ route('plans.edit', $plan->url) }}" class="btn btn-ocean">EDIT</a>
+                                <a href="{{ route('details.plan.edit', [$plan->url, $detail->id]) }}" class="btn btn-ocean">EDIT</a>
                             </td>
                         </tr>
                     @endforeach
