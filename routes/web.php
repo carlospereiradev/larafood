@@ -1,11 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\ACL\ProfileController;
 use App\Http\Controllers\Admin\DetailPlanController;
 use App\Http\Controllers\Admin\PlanController;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function() {
+
+    /**
+     * Routes Profiles
+     */
+    Route::any('profiles/search', [ProfileController::class, 'search'])->name('profiles.search');
+    Route::resource('profiles', ProfileController::class);
 
     /**
      * Routes Details Plans
